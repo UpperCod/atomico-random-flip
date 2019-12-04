@@ -37,7 +37,7 @@ Component `<web-grid>` presents a grid containing web components `<web-cell>`.
 *TBD*
 
 ### `<random-flip>`
-Component `<random-flip>` presents a grid containing web components `<web-cell>`.
+Component `<random-flip>` presents a "game" build up as a web component which uses `<web-cell>` and `<web-grid>`.
 
 *TBD*
 
