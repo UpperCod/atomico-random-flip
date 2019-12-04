@@ -37,7 +37,17 @@ Component `<web-grid>` presents a grid containing web components `<web-cell>`.
 *TBD*
 
 ### `<random-flip>`
-Component `<random-flip>` presents a "game" build up as a web component which uses `<web-cell>` and `<web-grid>`.
+Component `<random-flip>` presents a "game" built up from web components `<web-cell>` and `<web-grid>`.
+
+Rules:
+- Grid shows initial 'world'
+- A timer is turned on. At each tick, `<random-flip>` component randomly picks a cell and flips it (toggle cell's state).
+Then it checks if all cells have the same state (what ever live or dead state)
+  If that the case, `<random-flip>` raises event 'done'
+- User also can click on the cells to toggle their states
+- Once got 'done' event, we stop the game by setting proerty `active` to `false`.
+  Alert user that the game done.
+
 
 *TBD*
 
