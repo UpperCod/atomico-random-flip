@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="128x128"
+      href="img/icons/icon-128x128.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="img/icons/icon-512x512.png"
+    />
+    <meta name="theme-color" content="#232329" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="folder" />
+    <link rel="apple-touch-icon" href="img/icons/icon-128x128.png" />
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .one-cell {
+        display: block;
+        width: 40px;
+        height: 40px;
+        margin: 20px;
+      }
+      .four-cell {
+        width: 80px;
+        height: 80px;
+        margin: 20px;
+      }
+      .nine-cell {
+        width: 120px;
+        height: 120px;
+        margin: 20px;
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        /*
+          <web-cell>
+          Just change color per click
+        */
+        const webCell = document.getElementsByTagName("web-cell")[0];
+        webCell.addEventListener("togglecell", e => {
+          webCell.live = !webCell.live;
+        });
+
+        /*
+          <web-grid>
+          set initial 'world' object
+          responding to event 'worldchange' (raised by web-grid whenever user click on a cell)
+        */
+        // world created
+        const webGrid2 = document.getElementById("web-grid-2");
+        webGrid2.world = {
+          arr: [true, false, false, false],
+          cols: 2,
+          rows: 2,
+        };
+
+        // world changed
+        webGrid2.addEventListener("worldchange", e => {
+          webGrid2.world = toggleCell(e.detail);
+          if (isEnd(webGrid2.world)) {
+            console.log(webGrid2.id + " is done");
+            alert(webGrid2.id + " is done");
+          }
+        });
+
+        // transform the world by toggle state of the cell at (col, row)
+        const toggleCell = ({ world, col, row }) => {
+          const { arr, cols, rows } = world;
+
+          // make a copy of world array to modify
+          const newArr = arr.slice();
+          newArr[row * cols + col] = !arr[row * cols + col];
+          return { arr: newArr, rows: rows, cols: cols };
+        };
+
+        // is world ended?
+        const isEnd = world => {
+          const { rows, cols, arr } = world;
+          const sum = arr.reduce((prev, cur) => (cur ? prev + 1 : prev), 0);
+          return sum === 0 || sum === rows * cols ? true : false;
+        };
+
+        /*
+          <random-flip>
+          A simple 'game':
+          - grid show initial 'world'
+          - a timer is turned on.
+            At each tick, <random-flip> component randomly picks a cell, flip cell (toggle cell's state)
+            Then it checks if all cells have the same state (what ever live or died state)
+            If that the case, <random-flip>> raises event 'done'
+          - User also can click on the cells to toggle state
+          - Once got 'done' event, we stop the game by setting <random-flip>.active to false.
+            Alert user that the game done.
+          
+          There're 2 examples: 2x2 grid and 3x3 grid.
+        */
+        //  initialise components
+        const randomFlip2 = document.getElementById("random-flip-2");
+        randomFlip2.initialWorld = {
+          arr: [true, false, false, false],
+          cols: 2,
+          rows: 2,
+        };
+        randomFlip2.active = true;
+
+        const randomFlip3 = document.getElementById("random-flip-3");
+        randomFlip3.initialWorld = {
+          arr: [true, false, false, false, true, false, true, false, false],
+          cols: 3,
+          rows: 3,
+        };
+        randomFlip3.active = true;
+
+        // done
+        randomFlip3.addEventListener("done", e => {
+          randomFlip3.active = false;
+          console.log(randomFlip3.id + " is done");
+          alert(randomFlip3.id + " is done");
+        });
+
+        randomFlip2.addEventListener("done", e => {
+          randomFlip2.active = false;
+          console.log(randomFlip2.id + " is done");
+          alert(randomFlip2.id + " is done");
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <!-- component: <web-cell>, potential for presenting 2-state component
+      just another boring component when being alone
+      dispatch 'togglecell' event on click
+    -->
+    <div class="one-cell"><web-cell live='false'></web-cell></div>
+
+    <!-- component: <web-grid>
+      grid of 4 web-cell components
+      web-grid hold a matrix of cells' states. "Live" cell has navy color
+      dispatch 'done' event if all cells have the same state
+      cell's state is toggled per click on it
+    -->
+    <div class="four-cell"><web-grid id="web-grid-2"></web-grid></div>
+
+    <!-- component: <random-flip> (toggle cell state as flipping action)
+      grid of 4 web-cell components
+      web-grid hold a matrix of cells' states. "Live" cell has navy color
+      dispatch 'done' event if all cells have the same state
+      cell's state is toggled per click on it OR RANDOMLY TOGGLED behind the scene by timer
+    -->
+    <div class="four-cell">
+      <random-flip id="random-flip-2" tick="1000"></random-flip>
+    </div>
+
+    <!-- component: <random-flip> (toggle cell state as flipping action)
+      grid of 9 web-cell components
+      web-grid hold a matrix of cells' states. "Live" cell has navy color
+      dispatch 'done' event if all cells have the same state
+      cell's state is toggled per click on it OR randomly toggled behind the scene by timer
+    -->
+    <div class="nine-cell">
+      <random-flip id="random-flip-3" tick="500"></random-flip>
+    </div>
+
+    <!-- component: hello-world
+      original example of Atomico author.
+    -->
+    <hello-world></hello-world>
+
+    <script type="module" src="./src/index.js"></script>
+    <!--Delete comment to activate PWA
+		<script>
+			if ("serviceWorker" in navigator) {
+				navigator.serviceWorker.register("sw.js");
+			}
+		</script>
+    -->
+  </body>
+</html>
