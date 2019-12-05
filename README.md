@@ -15,6 +15,7 @@
 - The project structure is based on the **Hello World** example of Atomico author. The component `<hello-world>` is kept for reference in case it's needed.
 - Added `<web-cell>` component.
 - Added `<web-grid>` component.
+- Added `<random-flip>` component.
 - Commands to install, build, watch and run:
 
 ```bash
@@ -42,7 +43,7 @@ Component `<web-grid>` presents a grid containing web components `<web-cell>`.
 
 *TBD*
 
-### `<random-flip>`
+**`<random-flip>`**
 Component `<random-flip>` presents a "game" built up from web components `<web-cell>` and `<web-grid>`.
 
 Rules:
