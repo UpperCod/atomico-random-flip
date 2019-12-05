@@ -5,9 +5,9 @@
 	"main": "lib/index.js",
 	"source": "index.html",
 	"scripts": {
-		"build": "bundle src/**.html dist",
+		"build": "bundle index.html dist",
 		"build:web-components": "bundle src/web-components/**/*-*.js web-components --external",
-		"dev": "bundle src/**.html dist --watch --server",
+		"dev": "bundle index.html dist --watch --server",
 		"prepare": "npm run build"
 	},
 	"dependencies": {
